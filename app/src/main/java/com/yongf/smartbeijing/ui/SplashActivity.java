@@ -2,14 +2,16 @@
  * Copyright (C) 1996-2016 YONGF Inc.All Rights Reserved.
  * Scott Wang blog.54yongf.com | blog.csdn.net/yongf2014
  * 文件名: SplashActivity.java
- * 描述:
+ * 描述: 智慧北京的Splash界面
  * 修改历史:
  * 版本号    作者                日期              简要介绍相关操作
  *  1.0         Scott Wang     2016/2/27       Create
+ *  1.1         Scott Wang     2016/2/28       初始化Splash加载动画，以及进入主界面 | 向导界面
  */
 
 package com.yongf.smartbeijing.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,7 +30,7 @@ import com.yongf.smartbeijing.utils.SpTools;
  * 智慧北京的Splash界面，主要实现了动画的效果
  *
  * @author Scott Wang
- * @version 1.0, 2016/2/27
+ * @version 1.1, 2016/2/28
  * @see
  * @since SmartBeiJing1.0
  */
@@ -36,7 +38,14 @@ public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "SplashActivity";
 
+    /**
+     * Splash界面的背景图片
+     */
     ImageView mIvMainview;
+
+    /**
+     * Splash界面的动画效果集
+     */
     private AnimationSet as;
 
     @Override
@@ -75,10 +84,20 @@ public class SplashActivity extends AppCompatActivity {
                 if (SpTools.getBoolean(getApplicationContext(), MyConstants.IS_SETUP, false)) {
                     //true，设置过，直接进入主界面
                     Log.i(TAG, "load main");
+
+                    Intent main = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(main);
+
                 } else {
                     //false，进入向导界面
                     Log.i(TAG, "guide view");
+
+                    Intent guide = new Intent(SplashActivity.this, GuideActivity.class);
+                    startActivity(guide);
                 }
+
+                //关闭自己
+                finish();
             }
 
             @Override
