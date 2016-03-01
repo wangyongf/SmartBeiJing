@@ -6,6 +6,7 @@
  * 修改历史:
  * 版本号    作者                日期              简要介绍相关操作
  *  1.0         Scott Wang     2016/2/28       Create
+ *  1.1         Scott Wang     2016/3/2         左侧菜单界面的替换，主界面菜单界面的替换
  */
 
 package com.yongf.smartbeijing.ui;
@@ -25,7 +26,7 @@ import com.yongf.smartbeijing.view.MainContentFragment;
  * 智慧北京主界面
  *
  * @author Scott Wang
- * @version 1.0, 2016/2/28
+ * @version 1.1, 2016/2/28
  * @see
  * @since SmartBeiJing1.0
  */

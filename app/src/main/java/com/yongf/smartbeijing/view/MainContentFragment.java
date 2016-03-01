@@ -6,6 +6,7 @@
  * 修改历史:
  * 版本号    作者                日期              简要介绍相关操作
  *  1.0         Scott Wang     2016/2/29       Create
+ *  1.1         Scott Wang     2016/3/2         ViewPager的懒加载
  */
 
 package com.yongf.smartbeijing.view;
@@ -35,7 +36,7 @@ import java.util.List;
  * 主界面的Fragment
  *
  * @author Scott Wang
- * @version 1.0, 2016/2/29
+ * @version 1.1, 2016/2/29
  * @see
  * @since SmartBeiJing1.0
  */

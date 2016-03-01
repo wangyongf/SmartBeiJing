@@ -5,7 +5,8 @@
  * 描述: 首页界面的基本布局
  * 修改历史: 
  * 版本号    作者                日期              简要介绍相关操作
- *  1.0         Scott Wang     2016/3/1       Create	
+ *  1.0         Scott Wang     2016/3/1       Create
+ *  1.1         Scott Wang     2016/3/2       屏蔽首页的菜单按钮，首页对应的空页面
  */
 
 package com.yongf.smartbeijing.basepage;
@@ -21,7 +22,7 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * 首页界面的基本布局
  *
  * @author Scott Wang
- * @version 1.0, 2016/3/1
+ * @version 1.1, 2016/3/1
  * @see
  * @since SmartBeiJing1.0
  */

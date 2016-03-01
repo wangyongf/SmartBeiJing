@@ -5,7 +5,8 @@
  * 描述: 新闻中心基本布局
  * 修改历史: 
  * 版本号    作者                日期              简要介绍相关操作
- *  1.0         Scott Wang     2016/3/1       Create	
+ *  1.0         Scott Wang     2016/3/1       Create
+ *  1.1         Scott Wang     2016/3/2       获取服务器json数据并通过Gson解析
  */
 
 package com.yongf.smartbeijing.basepage;
@@ -29,7 +30,7 @@ import com.yongf.smartbeijing.utils.MyConstants;
  * 新闻中心基本布局
  *
  * @author Scott Wang
- * @version 1.0, 2016/3/1
+ * @version 1.1, 2016/3/1
  * @see
  * @since SmartBeiJing1.0
  */
