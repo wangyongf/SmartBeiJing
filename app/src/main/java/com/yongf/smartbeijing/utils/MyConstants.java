@@ -29,4 +29,10 @@ public interface MyConstants {
      * 向导界面是否设置过数据
      */
     String IS_SETUP = "issetup";
+
+    /**
+     * 新闻中心的数据来源
+     * apk发布修改该ip ip 或者 域名（最好用域名?? www.54yongf.com/zhbj/categories.json）
+     */
+    String NEWS_CENTER_URL = "http://10.0.2.2/zhbj/categories.json";
 }
