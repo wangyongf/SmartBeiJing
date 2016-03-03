@@ -7,6 +7,8 @@
  * 版本号    作者                日期              简要介绍相关操作
  *  1.0         Scott Wang     2016/2/28       Create
  *  1.1         Scott Wang     2016/3/2         左侧菜单界面的替换，主界面菜单界面的替换
+ *  1.2         Scott Wang     2016/3/2         左侧菜单界面的显示，尚未美化
+ *  1.3         Scott Wang     2016/3/4         隐藏标题栏，获取左侧，主界面Fragment
  */
 
 package com.yongf.smartbeijing.ui;
@@ -14,6 +16,7 @@ package com.yongf.smartbeijing.ui;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -26,7 +29,7 @@ import com.yongf.smartbeijing.view.MainContentFragment;
  * 智慧北京主界面
  *
  * @author Scott Wang
- * @version 1.1, 2016/2/28
+ * @version 1.3, 2016/2/28
  * @see
  * @since SmartBeiJing1.0
  */
@@ -40,11 +43,38 @@ public class MainActivity extends SlidingFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 隐藏标题
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         //初始化view
         initView();
 
         //初始化数据
         initData();
+    }
+
+    /**
+     * 获取左侧菜单的Fragment
+     *
+     * @return 左侧菜单的Fragment
+     */
+    public LeftMenuFragment getLeftMenuFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        LeftMenuFragment leftFragment = (LeftMenuFragment) fragmentManager.findFragmentByTag(LEFT_MENU_TAG);
+
+        return leftFragment;
+    }
+
+    /**
+     * 获取主界面的Fragment
+     *
+     * @return 主界面的Fragment
+     */
+    public MainContentFragment getMainMenuFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        MainContentFragment mainContentFragment = (MainContentFragment) fragmentManager.findFragmentByTag(MAIN_MENU_TAG);
+
+        return mainContentFragment;
     }
 
     /**

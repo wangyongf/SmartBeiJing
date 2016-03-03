@@ -7,6 +7,7 @@
  * 版本号    作者                日期              简要介绍相关操作
  *  1.0         Scott Wang     2016/3/1       Create
  *  1.1         Scott Wang     2016/3/2       将initData放到加载界面的时候执行
+ *  1.2         Scott Wang     2016/3/4       增加switchPage切换页面方法
  */
 
 package com.yongf.smartbeijing.basepage;
@@ -23,7 +24,7 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * 5个主界面的基类
  *
  * @author Scott Wang
- * @version 1.1, 2016/3/1
+ * @version 1.2, 2016/3/1
  * @see
  * @since SmartBeiJing1.0
  */
@@ -109,4 +110,12 @@ public class BaseTagPage {
         return root;
     }
 
+    /**
+     * 切换界面
+     *
+     * @param position 位置
+     */
+    public void switchPage(int position) {
+
+    }
 }

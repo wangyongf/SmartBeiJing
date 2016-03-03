@@ -107,6 +107,15 @@ public class MainContentFragment extends BaseFragment {
     }
 
     /**
+     * 左侧菜单点击，让主界面切换不同的页面
+     * @param subSelectionIndex
+     */
+    public void leftMenuClickSwitchPage(int subSelectionIndex) {
+        BaseTagPage baseTagPage = pages.get(selectIndex);
+        baseTagPage.switchPage(subSelectionIndex);
+    }
+
+    /**
      * 设置选中的页面
      */
     protected void switchPage() {
