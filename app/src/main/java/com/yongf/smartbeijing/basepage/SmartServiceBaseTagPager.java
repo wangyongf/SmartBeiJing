@@ -25,7 +25,7 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * @see
  * @since SmartBeiJing1.0
  */
-public class SmartServiceBaseTagPager extends BaseTagPage {
+public class SmartServiceBaseTagPager extends BaseTagPager {
 
     private static final String TAG = "SmartServiceBaseTagPager";
 

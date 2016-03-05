@@ -22,9 +22,9 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * @see
  * @since SmartBeiJing1.0
  */
-public abstract class BaseNewsCenterPage {
+public abstract class BaseNewsCenterPager {
 
-    private static final String TAG = "BaseNewsCenterPage";
+    private static final String TAG = "BaseNewsCenterPager";
 
     protected MainActivity mainActivity;
 
@@ -33,7 +33,7 @@ public abstract class BaseNewsCenterPage {
      */
     protected View root;
 
-    public BaseNewsCenterPage(MainActivity mainActivity) {
+    public BaseNewsCenterPager(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         root = initView();
 

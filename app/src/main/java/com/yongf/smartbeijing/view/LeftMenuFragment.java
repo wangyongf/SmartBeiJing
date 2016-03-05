@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yongf.smartbeijing.R;
-import com.yongf.smartbeijing.domain.NewsData;
+import com.yongf.smartbeijing.domain.NewsCenterData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class LeftMenuFragment extends BaseFragment {
     /**
      * 新闻中心左侧菜单的数据
      */
-    private List<NewsData> data = new ArrayList<>();
+    private List<NewsCenterData.NewsData> data = new ArrayList<>();
     private ListView lv_leftData;
     private MyListViewAdapter adapter;
     /**
@@ -114,7 +114,7 @@ public class LeftMenuFragment extends BaseFragment {
         return lv_leftData;
     }
 
-    public void setLeftMenuData(List<NewsData> data) {
+    public void setLeftMenuData(List<NewsCenterData.NewsData> data) {
         this.data = data;
 
         //设置好数据后，通知界面刷新数据

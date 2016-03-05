@@ -5,24 +5,26 @@
  * 描述:　新闻中心的新闻界面
  * 修改历史: 
  * 版本号    作者                日期              简要介绍相关操作
- *  1.0         Scott Wang     2016/3/2       Create	
+ *  1.0         Scott Wang     2016/3/2       Create
+ *  1.1         Scott Wang     2016/3/6       加入新闻页面的轮播图，在轮播图的第一页才可以打开左侧菜单
  */
 
 package com.yongf.smartbeijing.newscenterpage;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yongf.smartbeijing.R;
-import com.yongf.smartbeijing.domain.ViewTagData;
+import com.yongf.smartbeijing.domain.NewsCenterData;
+import com.yongf.smartbeijing.newstpipage.TPINewsCenterPager;
 import com.yongf.smartbeijing.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -32,13 +34,13 @@ import java.util.List;
  * 新闻中心的新闻界面
  *
  * @author Scott Wang
- * @version 1.0, 2016/3/2
+ * @version 1.1, 2016/3/2
  * @see
  * @since SmartBeiJing1.0
  */
-public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
+public class NewsBaseNewsCenterPager extends BaseNewsCenterPager {
 
-    private static final String TAG = "NewsBaseNewsCenterPage";
+    private static final String TAG = "NewsBaseNewsCenterPager";
 
     @ViewInject(R.id.newscenter_vp)
     private ViewPager newscenterVP;
@@ -48,9 +50,9 @@ public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
     /**
      * 页签的数据
      */
-    private List<ViewTagData> viewTagData = new ArrayList<>();
+    private List<NewsCenterData.NewsData.ViewTagData> viewTagData = new ArrayList<>();
 
-    public NewsBaseNewsCenterPage(MainActivity mainActivity, List<ViewTagData> children) {
+    public NewsBaseNewsCenterPager(MainActivity mainActivity, List<NewsCenterData.NewsData.ViewTagData> children) {
         super(mainActivity);
 
         this.viewTagData = children;
@@ -68,7 +70,7 @@ public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
 
         //给ViewPager添加页面切换的监听器，当页面位于第一个，可以滑动出左侧菜单；否则不可以
 
-        newscenterVP.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        newscneterTPI.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -82,7 +84,11 @@ public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
             public void onPageSelected(int position) {
                 if (position == 0) {
                     //第一个
-                    //
+                    //可以滑动出左侧菜单
+                    mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                } else {
+                    //不可以滑动出左侧菜单
+                    mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
                 }
             }
 
@@ -153,14 +159,17 @@ public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            TextView tv = new TextView(mainActivity);
-            tv.setText(viewTagData.get(position).title);
-            tv.setTextSize(25);
-            tv.setGravity(Gravity.CENTER);
+//            TextView tv = new TextView(mainActivity);
+//            tv.setText(viewTagData.get(position).title);
+//            tv.setTextSize(25);
+//            tv.setGravity(Gravity.CENTER);
+            TPINewsCenterPager tpiPager = new TPINewsCenterPager(mainActivity, viewTagData.get(position));
+            Log.i(TAG, viewTagData.get(position).url);
+            View rootView = tpiPager.getRootView();
 
-            container.addView(tv);
+            container.addView(rootView);
 
-            return tv;
+            return rootView;
         }
 
         @Override

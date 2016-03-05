@@ -28,9 +28,9 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * @see
  * @since SmartBeiJing1.0
  */
-public class BaseTagPage {
+public class BaseTagPager {
 
-    protected static final String TAG = "BaseTagPage";
+    protected static final String TAG = "BaseTagPager";
 
     /**
      * 上下文
@@ -57,7 +57,7 @@ public class BaseTagPage {
      */
     protected FrameLayout fl_content;
 
-    public BaseTagPage(MainActivity context) {
+    public BaseTagPager(MainActivity context) {
         this.mainActivity = context;
 
         //初始化布局

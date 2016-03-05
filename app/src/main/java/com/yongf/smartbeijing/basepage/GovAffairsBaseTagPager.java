@@ -25,7 +25,7 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * @see
  * @since SmartBeiJing1.0
  */
-public class GovAffairsBaseTagPager extends BaseTagPage {
+public class GovAffairsBaseTagPager extends BaseTagPager {
 
     private static final String TAG = "GovAffairsBaseTagPager";
 

@@ -22,7 +22,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yongf.smartbeijing.R;
-import com.yongf.smartbeijing.basepage.BaseTagPage;
+import com.yongf.smartbeijing.basepage.BaseTagPager;
 import com.yongf.smartbeijing.basepage.GovAffairsBaseTagPager;
 import com.yongf.smartbeijing.basepage.HomeBaseTagPager;
 import com.yongf.smartbeijing.basepage.NewsCenterBaseTagPager;
@@ -49,7 +49,7 @@ public class MainContentFragment extends BaseFragment {
     @ViewInject(R.id.rg_content_radios)
     private RadioGroup rg_radios;
 
-    private List<BaseTagPage> pages = new ArrayList<>();
+    private List<BaseTagPager> pages = new ArrayList<>();
 
     /**
      * 记录选中的页面编号
@@ -111,15 +111,15 @@ public class MainContentFragment extends BaseFragment {
      * @param subSelectionIndex
      */
     public void leftMenuClickSwitchPage(int subSelectionIndex) {
-        BaseTagPage baseTagPage = pages.get(selectIndex);
-        baseTagPage.switchPage(subSelectionIndex);
+        BaseTagPager baseTagPager = pages.get(selectIndex);
+        baseTagPager.switchPage(subSelectionIndex);
     }
 
     /**
      * 设置选中的页面
      */
     protected void switchPage() {
-//        BaseTagPage currentPage = pages.get(selectIndex);
+//        BaseTagPager currentPage = pages.get(selectIndex);
         //设置ViewPager显示的页面
         viewPager.setCurrentItem(selectIndex);
 
@@ -190,12 +190,12 @@ public class MainContentFragment extends BaseFragment {
         public Object instantiateItem(ViewGroup container, int position) {
             Log.i(TAG, "init:" + position);
 
-            BaseTagPage baseTagPage = pages.get(position);
-            View root = baseTagPage.getRoot();
+            BaseTagPager baseTagPager = pages.get(position);
+            View root = baseTagPager.getRoot();
             container.addView(root);
 
             //加载数据
-            baseTagPage.initData();
+            baseTagPager.initData();
 
             return root;
         }

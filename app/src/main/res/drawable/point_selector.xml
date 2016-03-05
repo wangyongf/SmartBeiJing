@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 点可用为红色-->
+    <item android:drawable="@drawable/dot_focus" android:state_enabled="true" />
+
+    <!-- 点不可用为灰色-->
+    <item android:drawable="@drawable/dot_normal" android:state_enabled="false" />
+
+</selector>

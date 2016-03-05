@@ -8,10 +8,12 @@
  *  1.0         Scott Wang     2016/3/1       Create
  *  1.1         Scott Wang     2016/3/2       获取服务器json数据并通过Gson解析
  *  1.2         Scott Wang     2016/3/4       动态显示不同的新闻中心页面
+ *  1.3         Scott Wang     2016/3/6       优化，先获取本地缓存数据，然后获取网络数据
  */
 
 package com.yongf.smartbeijing.basepage;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -21,14 +23,14 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.yongf.smartbeijing.domain.NewsCenterData;
-import com.yongf.smartbeijing.domain.NewsData;
-import com.yongf.smartbeijing.newscenterpage.BaseNewsCenterPage;
-import com.yongf.smartbeijing.newscenterpage.InteractBaseNewsCenterPage;
-import com.yongf.smartbeijing.newscenterpage.NewsBaseNewsCenterPage;
-import com.yongf.smartbeijing.newscenterpage.PhotosBaseNewsCenterPage;
-import com.yongf.smartbeijing.newscenterpage.TopicBaseNewsCenterPage;
+import com.yongf.smartbeijing.newscenterpage.BaseNewsCenterPager;
+import com.yongf.smartbeijing.newscenterpage.InteractBaseNewsCenterPager;
+import com.yongf.smartbeijing.newscenterpage.NewsBaseNewsCenterPager;
+import com.yongf.smartbeijing.newscenterpage.PhotosBaseNewsCenterPager;
+import com.yongf.smartbeijing.newscenterpage.TopicBaseNewsCenterPager;
 import com.yongf.smartbeijing.ui.MainActivity;
 import com.yongf.smartbeijing.utils.MyConstants;
+import com.yongf.smartbeijing.utils.SpTools;
 import com.yongf.smartbeijing.view.LeftMenuFragment;
 
 import java.util.ArrayList;
@@ -38,20 +40,21 @@ import java.util.List;
  * 新闻中心基本布局
  *
  * @author Scott Wang
- * @version 1.2, 2016/3/1
+ * @version 1.3, 2016/3/1
  * @see
  * @since SmartBeiJing1.0
  */
-public class NewsCenterBaseTagPager extends BaseTagPage {
+public class NewsCenterBaseTagPager extends BaseTagPager {
 
     private static final String TAG = "NewsCenterBaseTagPager";
 
     /**
      * 新闻中心要显示的四个页面
      */
-    private List<BaseNewsCenterPage> newsCenterPages = new ArrayList<>();
+    private List<BaseNewsCenterPager> newsCenterPages = new ArrayList<>();
 
     private NewsCenterData newsCenterData;
+    private Gson gson;
 
     public NewsCenterBaseTagPager(MainActivity context) {
         super(context);
@@ -59,16 +62,26 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 
     @Override
     public void initData() {
+        //0. 先获取本地数据
+        getCacheData();
 
         //1. 获取网络数据
+        getNetworkData();
+
+
+        super.initData();
+    }
+
+    private void getNetworkData() {
         HttpUtils httpUtils = new HttpUtils();
         httpUtils.send(HttpRequest.HttpMethod.GET, MyConstants.NEWS_CENTER_URL, new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 //访问数据成功
                 String jsonData = responseInfo.result;
-
-                Log.i(TAG, jsonData);
+                //保存到背地
+//                Log.i(TAG, jsonData);
+                SpTools.setString(mainActivity, MyConstants.NEWS_CENTER_URL, jsonData);
 
                 //2. 解析json数据
                 parseData(jsonData);
@@ -80,9 +93,18 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
                 Log.i(TAG, "网络请求数据失败" + e);
             }
         });
+    }
 
+    private void getCacheData() {
+        String jsonCache = SpTools.getString(mainActivity, MyConstants.NEWS_CENTER_URL, "");
+        if (TextUtils.isEmpty(jsonCache)) {
+            //没有本地数据
 
-        super.initData();
+        } else {
+            //有本地数据
+            //从本地取数据
+            parseData(jsonCache);
+        }
     }
 
     /**
@@ -92,7 +114,9 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
      */
     private void parseData(String jsonData) {
         //google提供的json解析器
-        Gson gson = new Gson();
+        if (gson == null) {
+            gson = new Gson();
+        }
 
         newsCenterData = gson.fromJson(jsonData, NewsCenterData.class);
 
@@ -112,24 +136,24 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
         //把读取的数据封装到界面容器中，通过左侧菜单点击，显示不同的页面
         //根据服务器的数据，创建四个页面（按顺序）
 
-        for (NewsData newsData : newsCenterData.data) {
-            BaseNewsCenterPage newsPage = null;
+        for (NewsCenterData.NewsData newsData : newsCenterData.data) {
+            BaseNewsCenterPager newsPage = null;
             //遍历四个新闻中心页面
             switch (newsData.type) {
                 case 1:     //新闻页面
-                    newsPage = new NewsBaseNewsCenterPage(mainActivity, newsCenterData.data.get(0).children);
+                    newsPage = new NewsBaseNewsCenterPager(mainActivity, newsCenterData.data.get(0).children);
 
                     break;
                 case 10:     //专题
-                    newsPage = new TopicBaseNewsCenterPage(mainActivity);
+                    newsPage = new TopicBaseNewsCenterPager(mainActivity);
 
                     break;
                 case 2:     //组图
-                    newsPage = new PhotosBaseNewsCenterPage(mainActivity);
+                    newsPage = new PhotosBaseNewsCenterPager(mainActivity);
 
                     break;
                 case 3:     //互动
-                    newsPage = new InteractBaseNewsCenterPage(mainActivity);
+                    newsPage = new InteractBaseNewsCenterPager(mainActivity);
 
                     break;
             }   //end switch
@@ -148,7 +172,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
      * @param position 要显示的页面
      */
     public void switchPage(int position) {
-        BaseNewsCenterPage baseNewsCenterPage = newsCenterPages.get(position);
+        BaseNewsCenterPager baseNewsCenterPager = newsCenterPages.get(position);
 
         //显示数据
         //设置标题
@@ -158,9 +182,9 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
         fl_content.removeAllViews();
 
         //初始化数据
-        baseNewsCenterPage.initData();
+        baseNewsCenterPager.initData();
 
         //替换掉白纸
-        fl_content.addView(baseNewsCenterPage.getRoot());     //添加自己的内容到白纸上
+        fl_content.addView(baseNewsCenterPager.getRoot());     //添加自己的内容到白纸上
     }
 }

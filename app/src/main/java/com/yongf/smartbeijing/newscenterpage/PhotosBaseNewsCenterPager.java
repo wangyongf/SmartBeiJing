@@ -24,11 +24,11 @@ import com.yongf.smartbeijing.ui.MainActivity;
  * @see
  * @since SmartBeiJing1.0
  */
-public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
+public class PhotosBaseNewsCenterPager extends BaseNewsCenterPager {
 
-    private static final String TAG = "PhotosBaseNewsCenterPage";
+    private static final String TAG = "PhotosBaseNewsCenterPager";
 
-    public PhotosBaseNewsCenterPage(MainActivity mainActivity) {
+    public PhotosBaseNewsCenterPager(MainActivity mainActivity) {
         super(mainActivity);
     }
 
