@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
-    <ListView
-        android:id="@+id/lv_tpi_news_listnews"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:cacheColorHint="#00000000"></ListView>
+    <include layout="@layout/listview_refresh_header" />
 
 </LinearLayout>
