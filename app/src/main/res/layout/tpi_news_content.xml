@@ -5,11 +5,10 @@
     android:orientation="vertical">
 
 
-
-    <ListView
+    <com.yongf.smartbeijing.view.RefreshListView
         android:id="@+id/lv_tpi_news_listnews"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:cacheColorHint="#00000000"></ListView>
+        android:cacheColorHint="#00000000"></com.yongf.smartbeijing.view.RefreshListView>
 
 </LinearLayout>

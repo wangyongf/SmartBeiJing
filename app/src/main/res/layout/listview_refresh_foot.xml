@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:gravity="center_horizontal"
     android:orientation="horizontal">
 
     <!-- 刷新和箭头的图片-->
@@ -13,7 +13,7 @@
         android:padding="5dip">
 
         <ProgressBar
-            android:id="@+id/pb_listview_root_loading"
+            android:id="@+id/pb_listview_foot_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@drawable/progressstyleshape" />
@@ -22,16 +22,16 @@
 
     <!-- 状态的描述和更新时间-->
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_listview_root_state_desc"
+            android:id="@+id/tv_listview_foot_state_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在加载数据"
+            android:text="正在加载"
             android:textColor="#ff0000"
             android:textSize="20sp" />
 

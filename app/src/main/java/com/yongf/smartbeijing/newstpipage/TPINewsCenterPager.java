@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -45,6 +44,7 @@ import com.yongf.smartbeijing.ui.MainActivity;
 import com.yongf.smartbeijing.utils.DensityUtils;
 import com.yongf.smartbeijing.utils.MyConstants;
 import com.yongf.smartbeijing.utils.SpTools;
+import com.yongf.smartbeijing.view.RefreshListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class TPINewsCenterPager {
      */
     @ViewInject(R.id.lv_tpi_news_listnews)
 
-    private ListView lv_listnews;
+    private RefreshListView lv_listnews;
     private MainActivity mainActivity;
     private View root;
     /**
@@ -363,7 +363,7 @@ public class TPINewsCenterPager {
         ViewUtils.inject(this, carousel);
 
         //把轮播图加载到listview中
-        lv_listnews.addHeaderView(carousel);
+        lv_listnews.addCarouselHeadView(carousel);
     }
 
     public View getRootView() {
