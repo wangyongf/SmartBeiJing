@@ -27,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
@@ -62,7 +63,7 @@ public class TPINewsCenterPager {
     /**
      * 轮播图切换的时间间隔
      */
-    public static final int DELAY_MILLIS = 4000;
+    public static final int DELAY_MILLIS = 5000;
     private static final String TAG = "TPINewsCenterPager";
 
     //所有组件
@@ -124,11 +125,17 @@ public class TPINewsCenterPager {
     private int picSelectIndex;
     private Handler handler;
 
+    //记录是否是刷新数据
+    private boolean isRefresh = false;
+
     /**
      * 新闻列表的数据
      */
     private List<TPINewsData.Data_TPINewsData.ListNews_Data_TPINewsData> listNews = new ArrayList<>();
     private ListNewsAdapter listNewsAdapter;
+
+    private String loadingMoreDataUrl;             //加载更多数据的URL
+    private String loadingDataUrl;                  //数据的来源URL，随时在变化
 
     public TPINewsCenterPager(MainActivity mainActivity, NewsCenterData.NewsData.ViewTagData viewTagData) {
         this.mainActivity = mainActivity;
@@ -156,6 +163,30 @@ public class TPINewsCenterPager {
      * 初始化事件
      */
     private void initEvent() {
+        lv_listnews.setOnRefreshDataListener(new RefreshListView.OnRefreshDataListener() {
+            @Override
+            public void refreshData() {
+                isRefresh = true;
+                //开始刷新数据
+                getNetworkData(MyConstants.SERVER_URL + viewTagData.url);
+                //改变listview的状态
+            }
+
+            @Override
+            public void loadingMore() {
+                //判断是否有更多的数据
+                if (TextUtils.isEmpty(loadingMoreDataUrl)) {
+                    Toast.makeText(mainActivity, "没有更多数据", Toast.LENGTH_SHORT).show();
+
+                    //刷新完毕
+                    lv_listnews.refreshFinish();
+                } else {
+                    //有数据
+                    getNetworkData(loadingMoreDataUrl);
+                }
+            }
+        });
+
         //给轮播图添加页面切换事件
         vp_carousel.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -198,7 +229,7 @@ public class TPINewsCenterPager {
         getCacheData();
 
         //获取网络数据
-        getNetworkData();
+        getNetworkData(MyConstants.SERVER_URL + viewTagData.url);
     }
 
     /**
@@ -245,6 +276,10 @@ public class TPINewsCenterPager {
      * @param picSelectIndex 当前position
      */
     private void setPicDescAndPointSelect(int picSelectIndex) {
+        if (picSelectIndex < 0 || picSelectIndex > carouselData.size() - 1) {
+            return;
+        }
+
         //设置点的描述信息
         tv_pic_desc.setText(carouselData.get(picSelectIndex).title);
 
@@ -298,7 +333,7 @@ public class TPINewsCenterPager {
      * 获取本地数据
      */
     private void getCacheData() {
-        String jsonCache = SpTools.getString(mainActivity, viewTagData.url, "");
+        String jsonCache = SpTools.getString(mainActivity, loadingDataUrl, "");
         if (!TextUtils.isEmpty(jsonCache)) {
             //有数据，解析数据
             TPINewsData tpiNewsCache = parseJson(jsonCache);
@@ -310,31 +345,59 @@ public class TPINewsCenterPager {
     /**
      * 获取网络数据
      */
-    private void getNetworkData() {
+    private void getNetworkData(final String url) {
+        loadingDataUrl = url;
+
         HttpUtils httpUtils = new HttpUtils();
 
 //        System.out.println("viewTagData = " + viewTagData.url);
 
-        httpUtils.send(HttpRequest.HttpMethod.GET, MyConstants.SERVER_URL + viewTagData.url, new RequestCallBack<String>() {
+        httpUtils.send(HttpRequest.HttpMethod.GET, url, new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 //请求数据成功
                 String jsonData = responseInfo.result;
 
                 //保存数据到本地
-                SpTools.setString(mainActivity, viewTagData.url, jsonData);
+                SpTools.setString(mainActivity, url, jsonData);
 
                 //解析数据
                 TPINewsData tpiNewsData = parseJson(jsonData);
 
-                //处理数据
-                processData(tpiNewsData);
+                //判断是否是记载更多数据
+                if (url.equals(loadingMoreDataUrl)) {
+                    //原有的数据+新的数据
+                    listNews.addAll(tpiNewsData.data.news);
+
+                    //更新界面
+                    listNewsAdapter.notifyDataSetChanged();
+
+                    Toast.makeText(mainActivity, "加载数据成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    //第一次取数据或者刷新数据
+
+                    //处理数据
+                    processData(tpiNewsData);
+
+                    if (isRefresh) {
+                        //设置ListView的头隐藏
+                        Toast.makeText(mainActivity, "刷新数据成功", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                lv_listnews.refreshFinish();
             }
 
             @Override
             public void onFailure(HttpException e, String s) {
                 //请求数据失败
                 Log.i(TAG, "失败了失败了失败了失败了失败了失败了");
+
+                if (isRefresh) {
+                    lv_listnews.refreshFinish();
+                }
+
+                Toast.makeText(mainActivity, "刷新数据失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -347,6 +410,11 @@ public class TPINewsCenterPager {
     private TPINewsData parseJson(String jsonData) {
         TPINewsData tpiNewsData = gson.fromJson(jsonData, TPINewsData.class);
 //        Log.i(TAG, tpiNewsData.data.news.get(0).title);
+        if (!TextUtils.isEmpty(tpiNewsData.data.more)) {
+            loadingMoreDataUrl = MyConstants.SERVER_URL + tpiNewsData.data.more;
+        } else {
+            loadingMoreDataUrl = "";
+        }
 
         return tpiNewsData;
     }
@@ -362,6 +430,7 @@ public class TPINewsCenterPager {
         View carousel = View.inflate(mainActivity, R.layout.tpi_news_carousel, null);
         ViewUtils.inject(this, carousel);
 
+        lv_listnews.setRefreshHeadEnable(true);
         //把轮播图加载到listview中
         lv_listnews.addCarouselHeadView(carousel);
     }

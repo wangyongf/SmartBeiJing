@@ -25,7 +25,8 @@
             android:id="@+id/pb_listview_header_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/progressstyleshape" />
+            android:indeterminateDrawable="@drawable/progressstyleshape"
+            android:visibility="invisible" />
 
     </FrameLayout>
 
@@ -49,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            android:text="最后刷新时间：2016-3-7　01:25:46"
+            android:text="最近刷新时间:2016-3-7 01:25:46"
             android:textColor="@android:color/darker_gray" />
 
     </LinearLayout>
