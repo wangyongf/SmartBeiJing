@@ -168,7 +168,7 @@ public class TPINewsCenterPager {
             public void refreshData() {
                 isRefresh = true;
                 //开始刷新数据
-                getNetworkData(MyConstants.SERVER_URL + viewTagData.url);
+                getNetworkData(MyConstants.SERVER_URL + viewTagData.url, false);
                 //改变listview的状态
             }
 
@@ -182,7 +182,7 @@ public class TPINewsCenterPager {
                     lv_listnews.refreshFinish();
                 } else {
                     //有数据
-                    getNetworkData(loadingMoreDataUrl);
+                    getNetworkData(loadingMoreDataUrl, true);
                 }
             }
         });
@@ -229,7 +229,7 @@ public class TPINewsCenterPager {
         getCacheData();
 
         //获取网络数据
-        getNetworkData(MyConstants.SERVER_URL + viewTagData.url);
+        getNetworkData(MyConstants.SERVER_URL + viewTagData.url, false);
     }
 
     /**
@@ -345,7 +345,7 @@ public class TPINewsCenterPager {
     /**
      * 获取网络数据
      */
-    private void getNetworkData(final String url) {
+    private void getNetworkData(final String url, final boolean isLoadingMore) {
         loadingDataUrl = url;
 
         HttpUtils httpUtils = new HttpUtils();
@@ -365,7 +365,7 @@ public class TPINewsCenterPager {
                 TPINewsData tpiNewsData = parseJson(jsonData);
 
                 //判断是否是记载更多数据
-                if (url.equals(loadingMoreDataUrl)) {
+                if (isLoadingMore) {
                     //原有的数据+新的数据
                     listNews.addAll(tpiNewsData.data.news);
 

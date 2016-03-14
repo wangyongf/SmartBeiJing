@@ -228,6 +228,7 @@ public class RefreshListView extends ListView {
                 break;
             case RELEASE:       //松开刷新
                 tv_state_desc.setText("松开刷新");
+
                 iv_arrow.startAnimation(upward_ra);
 
                 break;
