@@ -32,6 +32,7 @@
                 android:background="@android:color/transparent"
                 android:src="@drawable/back"
                 android:visibility="gone" />
+            <!-- a test-->
 
         </FrameLayout>
 
