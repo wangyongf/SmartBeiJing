@@ -5,7 +5,8 @@
  * 描述:　新闻中心的组图界面
  * 修改历史: 
  * 版本号    作者                日期              简要介绍相关操作
- *  1.0         Scott Wang     2016/3/2       Create	
+ *  1.0         Scott Wang     2016/3/2       Create
+ *  1.1         Scott Wang     2016/4/1       图片查看方式列表和网格的切换，图片的三级缓存
  */
 
 package com.yongf.smartbeijing.newscenterpage;
@@ -33,6 +34,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.yongf.smartbeijing.R;
 import com.yongf.smartbeijing.domain.PhotosData;
 import com.yongf.smartbeijing.ui.MainActivity;
+import com.yongf.smartbeijing.utils.BitmapCacheUtils;
 import com.yongf.smartbeijing.utils.MyConstants;
 import com.yongf.smartbeijing.utils.SpTools;
 
@@ -43,7 +45,7 @@ import java.util.List;
  * 新闻中心的组图界面
  *
  * @author Scott Wang
- * @version 1.0, 2016/3/2
+ * @version 1.1, 2016/4/1
  * @see
  * @since SmartBeiJing1.0
  */
@@ -51,6 +53,7 @@ public class PhotosBaseNewsCenterPager extends BaseNewsCenterPager {
 
     private static final String TAG = "PhotosBaseNewsCenterPager";
     private final BitmapUtils bitmapUtils;
+    private final BitmapCacheUtils bitmapCacheUtils;
     @ViewInject(R.id.lv_newscenter_photos)
     private ListView lv_photos;
     @ViewInject(R.id.gv_newscenter_photos)
@@ -67,6 +70,8 @@ public class PhotosBaseNewsCenterPager extends BaseNewsCenterPager {
 
         bitmapUtils = new BitmapUtils(mainActivity);
         bitmapUtils.configDefaultBitmapConfig(Bitmap.Config.ARGB_4444);
+
+        bitmapCacheUtils = new BitmapCacheUtils(mainActivity);
     }
 
     @Override
@@ -240,7 +245,8 @@ public class PhotosBaseNewsCenterPager extends BaseNewsCenterPager {
             holder.tv_desc.setText(photosNews.title);
 
             //设置图片
-            bitmapUtils.display(holder.iv_pic, photosNews.listimage);
+//            bitmapUtils.display(holder.iv_pic, photosNews.listimage);
+            bitmapCacheUtils.display(holder.iv_pic, photosNews.listimage);
 
             return convertView;
         }
