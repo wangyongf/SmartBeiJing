@@ -4,5 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/all_layout_tag" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <WebView
+            android:id="@+id/wv_newscenter_newsdetail"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"></WebView>
+
+        <!-- 进度条-->
+        <ProgressBar
+            android:id="@+id/pb_newscenter_newsdetail_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progressstyleshape" />
+    </FrameLayout>
 
 </LinearLayout>

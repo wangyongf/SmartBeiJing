@@ -33,13 +33,23 @@ public interface MyConstants {
     String IS_SETUP = "issetup";
 
     /**
+     * 服务器地址
+     */
+    String SERVER_URL = "http://192.168.1.103/zhbj3/";
+
+    /**
      * 新闻中心的数据来源
      * apk发布修改该ip ip 或者 域名（最好用域名?? www.54yongf.com/zhbj/categories.json）
      */
-    String NEWS_CENTER_URL = "http://192.168.1.140/zhbj3/categories.json";
+    String NEWS_CENTER_URL = SERVER_URL + "categories.json";
 
     /**
-     * 服务器地址
+     * 已读新闻的ID  key
      */
-    String SERVER_URL = "http://192.168.1.140/zhbj3";
+    String READ_NEWS_ID = "read_news_id";
+
+    /**
+     * 组图的URL
+     */
+    String PHOTOS_URL = SERVER_URL + "photos/photos_1.json";
 }

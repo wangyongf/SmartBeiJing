@@ -15,6 +15,7 @@ package com.yongf.smartbeijing.basepage;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
@@ -183,6 +184,23 @@ public class NewsCenterBaseTagPager extends BaseTagPager {
 
         //初始化数据
         baseNewsCenterPager.initData();
+
+        //判断，如果是组图listgrid切换的按钮进行显示
+        if (baseNewsCenterPager instanceof PhotosBaseNewsCenterPager) {
+            //组图
+            //显示listgrid切换的按钮显示
+            ib_listOrGrid.setVisibility(View.VISIBLE);
+            //设置点击事件，做list和grid的切换
+            ib_listOrGrid.setTag(baseNewsCenterPager);
+            ib_listOrGrid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((PhotosBaseNewsCenterPager) ib_listOrGrid.getTag()).switchListViewOrGridView(ib_listOrGrid);
+                }
+            });
+        } else {
+            ib_listOrGrid.setVisibility(View.GONE);
+        }
 
         //替换掉白纸
         fl_content.addView(baseNewsCenterPager.getRoot());     //添加自己的内容到白纸上

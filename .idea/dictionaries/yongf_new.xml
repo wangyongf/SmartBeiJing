@@ -10,10 +10,12 @@
       <w>listview</w>
       <w>mainview</w>
       <w>newscenter</w>
+      <w>newsdetail</w>
       <w>nextpage</w>
       <w>radiobutton</w>
       <w>settingcenter</w>
       <w>smartbeijing</w>
+      <w>textsize</w>
     </words>
   </dictionary>
 </component>

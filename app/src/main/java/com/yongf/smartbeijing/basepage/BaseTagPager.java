@@ -53,6 +53,11 @@ public class BaseTagPager {
     protected TextView tv_title;
 
     /**
+     * 组图显示格式（列表Or网格）
+     */
+    protected ImageButton ib_listOrGrid;
+
+    /**
      * 界面显示的内容
      */
     protected FrameLayout fl_content;
@@ -91,6 +96,7 @@ public class BaseTagPager {
         ib_menu = (ImageButton) root.findViewById(R.id.ib_base_content_menu);
         tv_title = (TextView) root.findViewById(R.id.tv_base_content_title);
         fl_content = (FrameLayout) root.findViewById(R.id.fl_base_content_tag);
+        ib_listOrGrid = (ImageButton) root.findViewById(R.id.ib_base_content_listorgrid);
     }
 
     /**

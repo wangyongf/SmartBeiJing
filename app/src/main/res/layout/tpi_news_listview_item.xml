@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dip"
         android:layout_toRightOf="@id/iv_tpi_news_listview_item_pic"
-        android:text="圣灵抵抗警方立即送到附近开了" />
+        android:text="圣灵抵抗警方立即送到附近开了"
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/tv_tpi_news_listview_item_date"
@@ -28,7 +29,8 @@
         android:layout_alignLeft="@id/tv_tpi_news_listview_item_title"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/tv_tpi_news_listview_item_title"
-        android:text="2016-3-6　15:56:30" />
+        android:text="2016-3-6　15:56:30"
+        android:textColor="#000000" />
 
     <ImageView
         android:id="@+id/iv_tpi_news_listview_item_icon"

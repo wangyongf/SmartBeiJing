@@ -14,7 +14,9 @@
 
 package com.yongf.smartbeijing.newstpipage;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,6 +45,7 @@ import com.yongf.smartbeijing.R;
 import com.yongf.smartbeijing.domain.NewsCenterData;
 import com.yongf.smartbeijing.domain.TPINewsData;
 import com.yongf.smartbeijing.ui.MainActivity;
+import com.yongf.smartbeijing.ui.NewsDetailActivity;
 import com.yongf.smartbeijing.utils.DensityUtils;
 import com.yongf.smartbeijing.utils.MyConstants;
 import com.yongf.smartbeijing.utils.SpTools;
@@ -163,6 +167,46 @@ public class TPINewsCenterPager {
      * 初始化事件
      */
     private void initEvent() {
+
+        //新闻列表的单击事件
+        lv_listnews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String newsUrl = null;
+                if (position > 0) {
+                    //获取当前新闻的链接
+                    TPINewsData.Data_TPINewsData.ListNews_Data_TPINewsData listNews_data_tpiNewsData = listNews.get(position - 1);
+                    newsUrl = listNews_data_tpiNewsData.url;
+                    //获取新闻的ID
+                    String newsID = listNews_data_tpiNewsData.id;
+
+                    //获取新闻的标记
+                    //保存id SharedPreference
+                    String readIDs = SpTools.getString(mainActivity, MyConstants.READ_NEWS_ID, null);
+                    if (TextUtils.isEmpty(readIDs)) {
+                        //第一次没有保存过id
+                        readIDs = newsID;       //保存当前新闻的id
+                    } else {
+                        //添加保存新闻id
+                        readIDs += ", " + newsID;
+                    }
+
+                    //重新保存读过的新闻ID
+                    SpTools.setString(mainActivity, MyConstants.READ_NEWS_ID, readIDs);
+
+                    //修改已读新闻的字体颜色
+                    //告诉界面更新
+                    listNewsAdapter.notifyDataSetChanged();
+                }
+
+                //跳转到新闻页面显示新闻
+                Intent newsActivity = new Intent(mainActivity, NewsDetailActivity.class);
+                newsActivity.putExtra("news_url", newsUrl);
+                mainActivity.startActivity(newsActivity);
+            }
+        });
+
+        //刷新listview数据的事件监听器
         lv_listnews.setOnRefreshDataListener(new RefreshListView.OnRefreshDataListener() {
             @Override
             public void refreshData() {
@@ -458,7 +502,7 @@ public class TPINewsCenterPager {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            NewsViewHolder holder = null;
+            NewsViewHolder holder;
             if (convertView == null) {
                 convertView = View.inflate(mainActivity, R.layout.tpi_news_listview_item, null);
 
@@ -474,8 +518,23 @@ public class TPINewsCenterPager {
             }
 
             //设置数据
+//            if (position == 0) {
+//                return convertView;
+//            }
 
             TPINewsData.Data_TPINewsData.ListNews_Data_TPINewsData listNews_data_tpiNewsData = listNews.get(position);
+
+            //判断新闻是否读取过
+            String newsID = listNews_data_tpiNewsData.id;
+            String isNewsRead = SpTools.getString(mainActivity, MyConstants.READ_NEWS_ID, "");
+            if (TextUtils.isEmpty(isNewsRead) || !isNewsRead.contains(newsID)) {
+                //没有读过
+                holder.tv_news_title.setTextColor(Color.BLACK);
+                holder.tv_news_date.setTextColor(Color.BLACK);
+            } else {
+                holder.tv_news_title.setTextColor(Color.GRAY);
+                holder.tv_news_date.setTextColor(Color.GRAY);
+            }
 
             //设置标题
             holder.tv_news_title.setText(listNews_data_tpiNewsData.title);
